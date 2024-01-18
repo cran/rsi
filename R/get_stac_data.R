@@ -21,6 +21,18 @@
 #' assets, this function uses [future.apply::future_lapply()] to iterate through
 #' images.
 #'
+#' @section Downloading from Planetary Computer:
+#'
+#' Certain data sets in Planetary Computer require
+#' [providing a subscription key](https://planetarycomputer.microsoft.com/docs/concepts/sas/).
+#' Even for non-protected data sets, providing a subscription key grants you
+#' higher rate limits and faster downloads. As such, it's a good idea to
+#' [request a Planetary Computer account](https://planetarycomputer.microsoft.com/account/request),
+#' then [generate a subscription key](https://planetarycomputer.developer.azure-api.net/).
+#' If you set the `rsi_pc_key` environment variable to your key (either primary
+#' or secondary; there is no difference), rsi will automatically use
+#' this key to sign all requests against Planetary Computer.
+#'
 #' There are currently some challenges with certain Landsat images in Planetary
 #' Computer; please see
 #' https://github.com/microsoft/PlanetaryComputer/discussions/101
@@ -274,6 +286,13 @@ get_stac_data <- function(aoi,
     items <- item_filter_function(items, ...)
   }
 
+  if (!length(items$features)) {
+    rlang::abort(
+      "No items were found for this combination of collection, AOI, date range, and item filter function.",
+      class = "rsi_no_items_found"
+    )
+  }
+
   if (missing(asset_names)) asset_names <- NULL
   if (is.null(asset_names)) asset_names <- rstac::items_assets(items)
   if (is.null(names(asset_names))) names(asset_names) <- asset_names
@@ -373,6 +392,7 @@ get_stac_data <- function(aoi,
 
   if (is.null(composite_function)) {
     app <- tryCatch(rstac::items_datetime(items), error = function(e) NA)
+    app <- gsub(":", "", app) # #29, #32
     if (any(is.na(app))) app <- NULL
     app <- app %||% seq_along(download_results[["final_bands"]])
 
