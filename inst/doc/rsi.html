@@ -350,7 +350,7 @@ specify both a spatial and temporal area of interest. To define our
 spatial area of interest, we’ll first mock up a small bounding box in
 northern Massachusetts (in a planar CRS appropriate for the region):</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>our_aoi <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_bbox</span>(</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">xmin =</span> <span class="dv">200000</span>, <span class="at">ymin =</span> <span class="dv">900000</span>, <span class="at">xmax =</span> <span class="dv">200100</span>, <span class="at">ymax =</span> <span class="dv">900100</span>), </span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">xmin =</span> <span class="dv">200000</span>, <span class="at">ymin =</span> <span class="dv">900000</span>, <span class="at">xmax =</span> <span class="dv">200100</span>, <span class="at">ymax =</span> <span class="dv">900100</span>),</span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">crs =</span> <span class="dv">26986</span></span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>)</span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>our_aoi <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_as_sf</span>(sf<span class="sc">::</span><span class="fu">st_as_sfc</span>(our_aoi))</span>
@@ -379,7 +379,7 @@ to get a progress bar to report our download status.</p>
 <p>By default, <code>get_landsat_imagery()</code> will download a
 composite of all bands available in Landsat 8 and 9 imagery for our
 timeframe:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">rast</span>(our_imagery) <span class="sc">|&gt;</span> </span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">rast</span>(our_imagery) <span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">plot</span>()</span></code></pre></div>
 <p>Notice that this composite has been cloud-masked (using the QA pixel
 band) and rescaled (using the scale and offset specified in metadata
@@ -389,7 +389,7 @@ behaviors via function arguments.</p>
 instance, we could also grab a DEM for this area from Planetary
 Computer, using the <code>get_dem()</code> function:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>our_dem <span class="ot">&lt;-</span> <span class="fu">get_dem</span>(our_aoi)</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">rast</span>(our_dem) <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">rast</span>(our_dem) <span class="sc">|&gt;</span></span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">plot</span>()</span></code></pre></div>
 <p>Under the hood, both of these functions (and their friends,
 <code>get_sentinel2_imagery()</code> and
@@ -402,7 +402,7 @@ you care about.</p>
 also has an interface to the <a href="https://github.com/awesome-spectral-indices/awesome-spectral-indices">Awesome
 Spectral Indices</a> project via the <code>spectral_indices()</code>
 function:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">spectral_indices</span>() <span class="sc">|&gt;</span> </span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">spectral_indices</span>() <span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
 <p>This function attempts to grab the newest version of the spectral
 indices JSON file from the ASI repo, and then stores that data in a
@@ -418,7 +418,7 @@ indices. For instance, the <code>filter_platforms()</code> function can
 be used to, well, filter the list to only indices that can be calculated
 from a given platform. For instance, to filter to only indices that can
 be calculated using data from Landsat’s Operational Land Imager:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">filter_platforms</span>(<span class="at">platforms =</span> <span class="st">&quot;Landsat-OLI&quot;</span>) <span class="sc">|&gt;</span> </span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">filter_platforms</span>(<span class="at">platforms =</span> <span class="st">&quot;Landsat-OLI&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
 <p>There’s an equivalent function to filter indices based upon the bands
 that require. For instance, we can filter the list to only indices that
@@ -441,7 +441,7 @@ from our images:</p>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="fu">filter_bands</span>(<span class="at">bands =</span> <span class="fu">names</span>(terra<span class="sc">::</span><span class="fu">rast</span>(our_imagery))),</span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="st">&quot;our_indices.tif&quot;</span></span>
 <span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>)</span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">rast</span>(our_indices) <span class="sc">|&gt;</span> </span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">rast</span>(our_indices) <span class="sc">|&gt;</span></span>
 <span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">plot</span>()</span></code></pre></div>
 <p>Note that <code>calculate_indices()</code> is evaluating the formulas
 in the <code>formula</code> column of the spectral indices data frame as
@@ -472,7 +472,7 @@ model fitting and prediction:</p>
 <span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.vrt&quot;</span>)</span>
 <span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>)</span>
 <span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">rast</span>(combined_layers) <span class="sc">|&gt;</span> </span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">rast</span>(combined_layers) <span class="sc">|&gt;</span></span>
 <span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">plot</span>()</span></code></pre></div>
 
 

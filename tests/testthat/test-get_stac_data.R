@@ -157,7 +157,7 @@ test_that("hidden arguments work", {
       "2022-06-01",
       "2022-06-30",
       output_filename = tempfile(fileext = ".tif"),
-      query_function = default_query_function,
+      query_function = rsi_query_api,
       mask_function = landsat_mask_function
     )
   )
@@ -185,7 +185,7 @@ test_that("simple merge method works", {
       asset_names = "lcpri",
       stac_source = "https://planetarycomputer.microsoft.com/api/stac/v1",
       collection = "usgs-lcmap-conus-v13",
-      query_function = default_query_function,
+      query_function = rsi_query_api,
       sign_function = rsi::sign_planetary_computer,
       output_filename = tempfile(fileext = ".tif")
     )
@@ -215,9 +215,9 @@ test_that("warning (but not error) fires if `mask_band` is not NULL with NULL `m
 test_that("get_*_data works with mapply() (#17)", {
   skip_on_cran()
   skip_if_offline()
-  san_antonio = sf::st_point(c(-98.491142, 29.424349))
-  san_antonio = sf::st_sfc(san_antonio, crs = "EPSG:4326")
-  san_antonio = sf::st_buffer(sf::st_transform(san_antonio, "EPSG:3081"), 100)
+  san_antonio <- sf::st_point(c(-98.491142, 29.424349))
+  san_antonio <- sf::st_sfc(san_antonio, crs = "EPSG:4326")
+  san_antonio <- sf::st_buffer(sf::st_transform(san_antonio, "EPSG:3081"), 100)
 
   expect_no_error(
     mapply(
@@ -271,7 +271,8 @@ test_that("no-composite paths work on Windows #29, #32", {
       aoi = aoi,
       start_date = "2022-06-01",
       end_date = "2022-08-01",
-      composite_function = NULL
+      composite_function = NULL,
+      output_filename = tempfile(fileext = ".tif")
     )
   )
 })
@@ -295,10 +296,90 @@ test_that("no-composites return the same data", {
           aoi = aoi,
           start_date = "2022-07-01",
           end_date = "2022-07-05",
-          composite_function = NULL
+          composite_function = NULL,
+          output_filename = tempfile(fileext = ".tif")
         )
       )
     ),
     setdiff(rsi::landsat_band_mapping$planetary_computer_v1, "T")
+  )
+})
+
+test_that("get_naip_imagery() is stable", {
+  skip_on_cran()
+  skip_if_offline()
+  aoi <- sf::st_point(c(-74.912131, 44.080410))
+  aoi <- sf::st_set_crs(sf::st_sfc(aoi), 4326)
+  aoi <- sf::st_buffer(sf::st_transform(aoi, 3857), 100)
+
+  expect_no_error(
+    out <- get_naip_imagery(
+      aoi,
+      "2018-01-01",
+      "2020-01-31",
+      output_filename = tempfile(fileext = ".tif")
+    )
+  )
+  expect_no_error(terra::rast(out))
+})
+
+test_that("get_alos_palsar_imagery() is stable", {
+  skip_on_cran()
+  skip_if_offline()
+  aoi <- sf::st_point(c(-74.912131, 44.080410))
+  aoi <- sf::st_set_crs(sf::st_sfc(aoi), 4326)
+  aoi <- sf::st_buffer(sf::st_transform(aoi, 3857), 100)
+
+  expect_no_error(
+    out <- get_alos_palsar_imagery(
+      aoi,
+      "2021-01-01",
+      "2021-12-31",
+      output_filename = tempfile(fileext = ".tif")
+    )
+  )
+  expect_no_error(terra::rast(out))
+})
+
+test_that("non-sf AOI throws an error", {
+  expect_error(
+    get_stac_data(2),
+    class = "rsi_aoi_not_sf"
+  )
+})
+
+test_that("Providing pixel sizes with geographic coords fires the expected warning", {
+  skip_on_cran()
+  skip_if_offline()
+  aoi <- sf::st_point(c(-74.912131, 44.080410))
+  aoi <- sf::st_set_crs(sf::st_sfc(aoi), 4326)
+
+  expect_error(
+    tryCatch(
+      get_stac_data(aoi, pixel_x_size = 30, pixel_y_size = 30),
+      rsi_default_pixel_size_geographic_coords = stop("The warning fired")
+    )
+  )
+})
+
+test_that("Providing no asset names fires the expected warning", {
+  skip_on_cran()
+  skip_if_offline()
+  aoi <- sf::st_point(c(-74.912131, 44.080410))
+  aoi <- sf::st_set_crs(sf::st_sfc(aoi), 4326)
+  aoi <- sf::st_buffer(sf::st_transform(aoi, 5070), 100)
+
+  expect_error(
+    tryCatch(
+      get_stac_data(
+        aoi,
+        start_date = "2022-01-01",
+        end_date = "2022-12-31",
+        stac_source = "https://planetarycomputer.microsoft.com/api/stac/v1/",
+        collection = "usgs-lcmap-conus-v13",
+        output_filename = tempfile(fileext = ".tif"),
+      ),
+      rsi_missing_asset_names = stop("The warning fired")
+    )
   )
 })

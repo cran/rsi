@@ -35,18 +35,17 @@
 #'   aoi,
 #'   start_date = "2022-06-01",
 #'   end_date = "2022-08-30",
-#'   query_function = default_query_function
+#'   query_function = rsi_query_api
 #' )
 #'
 #' @export
-default_query_function <- function(bbox,
-                                   stac_source,
-                                   collection,
-                                   start_date,
-                                   end_date,
-                                   limit,
-                                   ...) {
-
+rsi_query_api <- function(bbox,
+                          stac_source,
+                          collection,
+                          start_date,
+                          end_date,
+                          limit,
+                          ...) {
   if (!is.null(start_date)) {
     datetime <- paste0(start_date, "/", end_date)
   } else {
@@ -66,14 +65,17 @@ default_query_function <- function(bbox,
     limit = limit
   )
 
-  items <- rstac::items_fetch(rstac::get_request(items))
+  items <- rstac::items_fetch(
+    rstac::get_request(items, rsi_user_agent),
+    rsi_user_agent
+  )
 
   items
 }
 
 #' Sign STAC items retrieved from the Planetary Computer
 #'
-#' @param items A STACItemCollection, as returned by `default_query_function`.
+#' @param items A STACItemCollection, as returned by `rsi_query_api`.
 #' @param subscription_key Optionally, a subscription key associated with your
 #' Planetary Computer account. At the time of writing, this is required for
 #' downloading Sentinel 1 RTC products, as well as NAIP imagery. This key will
@@ -97,15 +99,14 @@ default_query_function <- function(bbox,
 sign_planetary_computer <- function(items,
                                     subscription_key = Sys.getenv("rsi_pc_key")) {
   if (subscription_key == "") {
-    rstac::items_sign(items, rstac::sign_planetary_computer())
+    rstac::items_sign(items, rstac::sign_planetary_computer(rsi_user_agent))
   } else {
     rstac::items_sign(
       items,
       rstac::sign_planetary_computer(
+        rsi_user_agent,
         headers = c("Ocp-Apim-Subscription-Key" = subscription_key)
       )
     )
   }
 }
-
-

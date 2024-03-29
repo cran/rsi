@@ -87,10 +87,12 @@ stack_rasters <- function(rasters,
 
   tryCatch(
     check_type_and_length(rasters = list()),
-    error = function(e) check_type_and_length(
-      rasters = character(),
-      call = rlang::caller_env(4)
-    )
+    error = function(e) {
+      check_type_and_length(
+        rasters = character(),
+        call = rlang::caller_env(4)
+      )
+    }
   )
 
   out_dir <- dirname(output_filename)
@@ -180,6 +182,8 @@ stack_rasters <- function(rasters,
   if (!missing(band_names) && is.function(band_names)) {
     var_names <- band_names(var_names)
   }
+  # technically we could have skipped reading the names of each raster here
+  # and just accepted the band names, but we want to check the CRS anyway
   if (!missing(band_names) && is.character(band_names)) {
     var_names <- band_names
   }
@@ -233,16 +237,32 @@ stack_rasters <- function(rasters,
 
   band_no <- 1
   vrt_bands <- vector("list", length(intermediate_vrt))
+
+  set_names <- FALSE
+  if (length(intermediate_vrt) == length(var_names)) {
+    set_names <- TRUE
+  } else if (!missing(band_names)) {
+    rlang::warn(
+      c(
+        "The number of band names provided did not match the number of bands in the output file.",
+        i = "Ignoring the provided band names and using default values instead."
+      ),
+      class = "rsi_band_name_length_mismatch"
+    )
+  }
+
   for (vrt in intermediate_vrt) {
     vrt <- readLines(vrt)
     band_def <- grep("VRTRasterBand", vrt)
     vrt <- vrt[seq(band_def[[1]], band_def[[2]])]
     vrt[1] <- gsub("band=\"1\"", paste0("band=\"", band_no, "\""), vrt[1])
-    vrt <- c(
-      vrt[1],
-      paste0("    <Description>", var_names[[band_no]], "</Description>"),
-      vrt[2:length(vrt)]
-    )
+    if (set_names) {
+      vrt <- c(
+        vrt[1],
+        paste0("    <Description>", var_names[[band_no]], "</Description>"),
+        vrt[2:length(vrt)]
+      )
+    }
 
     vrt_bands[[band_no]] <- vrt
 
