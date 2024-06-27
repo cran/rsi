@@ -13,6 +13,7 @@ stack_rasters(
   reference_raster = 1,
   resampling_method = "bilinear",
   band_names,
+  check_crs = TRUE,
   gdalwarp_options = c("-multi", "-overwrite", "-co", "COMPRESS=DEFLATE", "-co",
     "PREDICTOR=2", "-co", "NUM_THREADS=ALL_CPUS"),
   gdal_config_options = c(VSI_CACHE = "TRUE", GDAL_CACHEMAX = "30\%", VSI_CACHE_SIZE =
@@ -23,9 +24,9 @@ stack_rasters(
 }
 \arguments{
 \item{rasters}{A list of rasters to combine into a single multi-band raster,
-either as SpatRaster objects from \code{\link[terra:rast]{terra::rast()}} or character file paths
-to files that can be read by \code{\link[terra:rast]{terra::rast()}}. Rasters will be "stacked" upon
-one another, preserving values. They must share CRS.}
+as character file paths to files that can be read by \code{\link[terra:rast]{terra::rast()}}.
+Rasters will be "stacked" upon one another, preserving values. They must
+share CRS.}
 
 \item{output_filename}{The location to save the final "stacked" raster. If
 this filename has a "vrt" extension as determined by \code{tools::file_ext()},
@@ -54,6 +55,10 @@ resolutions in the VRT.}
 \item{band_names}{Either a character vector of band names, or a function that
 when given a character vector of band names, returns a character vector of
 the same length containing new band names.}
+
+\item{check_crs}{Logical: Should this function check that all \code{rasters} share
+the same CRS? Set to \code{FALSE} only if you are entirely confident that rasters
+have equivalent CRS definitions, but not identical WKT strings.}
 
 \item{gdalwarp_options}{Options passed to \code{gdalwarp} through the \code{options}
 argument of \code{\link[sf:gdal_utils]{sf::gdal_utils()}}. This argument is ignored (with a warning)

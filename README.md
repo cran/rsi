@@ -17,6 +17,9 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rsi)](https://CRAN.R-project.org/package=rsi)
+[![DOI](https://zenodo.org/badge/682237263.svg)](https://zenodo.org/doi/10.5281/zenodo.10926857)
+[![Status at rOpenSci Software Peer
+Review](https://badges.ropensci.org/636_status.svg)](https://github.com/ropensci/software-review/issues/636)
 <!-- badges: end -->
 
 The goal of rsi is to address several **r**epeated **s**patial
@@ -45,19 +48,8 @@ install.packages("rsi")
 ```
 
 You can install the development version of rsi from
-[GitHub](https://github.com/Permian-Global-Research/rsi) with:
-
-``` r
-install.packages(
-  'rsi', 
-  repos = c(
-    'https://mikemahoney218.r-universe.dev', 
-    'https://cloud.r-project.org'
-  )
-)
-```
-
-Or, if you use [pak](https://pak.r-lib.org/):
+[GitHub](https://github.com/Permian-Global-Research/rsi) using
+[pak](https://pak.r-lib.org/):
 
 ``` r
 # install.packages("pak")
@@ -74,7 +66,7 @@ project](https://github.com/awesome-spectral-indices/awesome-spectral-indices):
 library(rsi)
 
 spectral_indices()
-#> # A tibble: 231 × 9
+#> # A tibble: 243 × 9
 #>    application_domain bands     contributor   date_of_addition formula long_name
 #>    <chr>              <list>    <chr>         <chr>            <chr>   <chr>    
 #>  1 vegetation         <chr [2]> https://gith… 2021-11-17       (N - 0… Aerosol …
@@ -87,7 +79,7 @@ spectral_indices()
 #>  8 vegetation         <chr [2]> https://gith… 2022-04-08       (N * (… Advanced…
 #>  9 water              <chr [4]> https://gith… 2021-09-18       4.0 * … Automate…
 #> 10 water              <chr [5]> https://gith… 2021-09-18       B + 2.… Automate…
-#> # ℹ 221 more rows
+#> # ℹ 233 more rows
 #> # ℹ 3 more variables: platforms <list>, reference <chr>, short_name <chr>
 ```
 
@@ -179,7 +171,6 @@ indices <- calculate_indices(
   available_indices,
   output_filename = tempfile(fileext = ".tif")
 )
-#> |---------|---------|---------|---------|=========================================                                          
 
 # Plot the first handful of spatial indices
 terra::plot(terra::rast(indices))
@@ -207,6 +198,16 @@ terra::plot(terra::rast(raster_stack))
 
 This can be extremely useful as a way to create predictor bricks and
 other multi-band rasters from various data sources.
+
+## Contributing
+
+We love contributions! See our [contribution
+guide](https://github.com/Permian-Global-Research/rsi/blob/main/.github/CONTRIBUTING.md)
+for pointers on how to make your contribution as easy to accept as
+possible – in particular, consider [opening an
+issue](https://github.com/Permian-Global-Research/rsi/issues/new/choose)
+with a [minimal reprex](https://www.tidyverse.org/help/#reprex) to make
+sure that we understand what your changes are meant to do.
 
 ## License
 

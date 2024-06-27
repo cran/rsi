@@ -4,7 +4,17 @@
 \alias{calculate_indices}
 \title{Calculate indices from the bands of a raster}
 \usage{
-calculate_indices(raster, indices, output_filename, ..., names_suffix = NULL)
+calculate_indices(
+  raster,
+  indices,
+  output_filename,
+  ...,
+  cores = 1L,
+  wopt = list(),
+  overwrite = FALSE,
+  extra_objects = list(),
+  names_suffix = NULL
+)
 }
 \arguments{
 \item{raster}{The raster (either as a SpatRaster or object readable by
@@ -20,6 +30,20 @@ name) will work.}
 \item{output_filename}{The filename to write the computed metrics to.}
 
 \item{...}{These dots are for future extensions and must be empty.}
+
+\item{cores}{positive integer. If \code{cores > 1}, a 'parallel' package cluster with that many cores is created and used}
+
+\item{wopt}{list with named options for writing files as in \code{\link[terra]{writeRaster}}}
+
+\item{overwrite}{logical. If \code{TRUE}, \code{filename} is overwritten}
+
+\item{extra_objects}{A named list of additional objects to pass to the
+minimal environment that formulas are executed in. For instance, if you
+need to use the \code{pmax} function in order to calculate an index, you can
+make it available in the environment by setting
+\code{extra_objects = list("pmax" = pmax)}. Providing extra functionality is
+inherently less safe than the default minimal environment, and as such always
+emits a warning, which you can suppress with \code{suppressWarnings()}.}
 
 \item{names_suffix}{If not \code{NULL}, will be used (with \code{\link[=paste]{paste()}}) to add a
 suffix to each of the band names returned.}
@@ -50,9 +74,10 @@ workload.
 }
 
 \examples{
+our_raster <- system.file("rasters/example_sentinel1.tif", package = "rsi")
 calculate_indices(
-  system.file("rasters/example_sentinel1.tif", package = "rsi"),
-  filter_platforms(platforms = "Sentinel-1 (Dual Polarisation VV-VH)"),
+  our_raster,
+  filter_bands(bands = names(terra::rast(our_raster))),
   tempfile(fileext = ".tif"),
   names_suffix = "sentinel1"
 )
