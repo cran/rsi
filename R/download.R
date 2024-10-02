@@ -80,6 +80,12 @@ rsi_download_rasters <- function(items,
     gdalwarp_options <- set_gdalwarp_extent(gdalwarp_options, aoi, NULL)
   }
 
+  # Which loop gets parallelized is determined based on which has more steps,
+  # working from the assumption that all downloads take about as long
+  #
+  # so if we aren't merging, or if there's more assets than tiles, we'll
+  # parallelize the outside loop that walks over assets (which, unless the user 
+  # has set up wild nested futures, turns the inside one into a serial process)
   asset_iterator <- ifelse(
     merge || (n_tiles_out < ncol(download_locations)),
     function(...) future.apply::future_lapply(..., future.seed = TRUE),
@@ -128,7 +134,7 @@ rsi_download_rasters <- function(items,
                   "Failed to download {items$features[[which_item]]$id %||% 'UNKNOWN'} from {items$features[[which_item]]$properties$datetime %||% 'UNKNOWN'}" # nolint
                 )
               )
-              download_locations[which_item, ] <- NA
+              download_locations[which_item, ] <<- NA
             }
           )
         },
@@ -138,7 +144,11 @@ rsi_download_rasters <- function(items,
       )
     }
   )
-  as.data.frame(as.list(stats::na.omit(download_locations)))
+  out <- stats::na.omit(download_locations)
+  na_attr <- stats::na.action(out)
+  out <- as.data.frame(as.list(out))
+  attr(out, "na.action") <- na_attr
+  out
 }
 
 maybe_sign_items <- function(items, sign_function) {

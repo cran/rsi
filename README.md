@@ -39,6 +39,15 @@ provides:
 - A **r**aster **s**tack **i**ntegration method for combining multiple
   rasters containing distinct data sets into a single raster stack.
 
+The functions in rsi are designed around letting you use the tools
+you’re familiar with to process raster data using compute that you
+control – whether that means grabbing imagery with your laptop to add
+some context to a map, or grabbing tranches of data to a virtual server
+hosted near your data provider for lightning fast downloads. The outputs
+from rsi functions are standard objects – usually the file paths of
+raster files saved to your hard drive – meaning it’s easy to incorporate
+rsi into broader spatial data processing workflows.
+
 ## Installation
 
 You can install rsi via:
@@ -66,7 +75,7 @@ project](https://github.com/awesome-spectral-indices/awesome-spectral-indices):
 library(rsi)
 
 spectral_indices()
-#> # A tibble: 243 × 9
+#> # A tibble: 231 × 9
 #>    application_domain bands     contributor   date_of_addition formula long_name
 #>    <chr>              <list>    <chr>         <chr>            <chr>   <chr>    
 #>  1 vegetation         <chr [2]> https://gith… 2021-11-17       (N - 0… Aerosol …
@@ -79,7 +88,7 @@ spectral_indices()
 #>  8 vegetation         <chr [2]> https://gith… 2022-04-08       (N * (… Advanced…
 #>  9 water              <chr [4]> https://gith… 2021-09-18       4.0 * … Automate…
 #> 10 water              <chr [5]> https://gith… 2021-09-18       B + 2.… Automate…
-#> # ℹ 233 more rows
+#> # ℹ 221 more rows
 #> # ℹ 3 more variables: platforms <list>, reference <chr>, short_name <chr>
 ```
 
@@ -124,9 +133,9 @@ terra::plot(terra::rast(landsat_image))
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
-For these common use cases, however, rsi also provides helper functions
-which provide most of these arguments for you. For instance, that
-`get_stac_data()` call could be as simple as:
+For common data sets, rsi also provides helper functions which provide
+most of these arguments for you. For instance, that `get_stac_data()`
+call could be as simple as:
 
 ``` r
 landsat_image <- get_landsat_imagery(
@@ -135,10 +144,88 @@ landsat_image <- get_landsat_imagery(
   end_date = "2022-08-30",
   output_filename = tempfile(fileext = ".tif")
 )
+#> ext 0: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 1: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 2: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 3: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 4: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 5: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 6: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 7: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 0: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 1: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 2: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 3: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 4: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 5: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 6: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 7: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 0: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 1: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 2: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 3: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 4: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 5: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 6: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 7: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 0: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 1: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 2: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 3: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 4: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 5: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 6: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 7: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 0: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 1: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 2: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 3: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 4: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 5: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 6: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 7: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 0: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 1: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 2: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 3: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 4: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 5: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 6: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 7: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 0: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 1: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 2: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 3: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 4: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 5: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 6: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 7: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 0: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 1: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 2: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 3: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 4: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 5: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 6: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06 
+#> ext 7: 1.66848e+06 1.67049e+06 2.52827e+06 2.53028e+06
 terra::plot(terra::rast(landsat_image))
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+Note that we’ve been plotting each band individually so far by calling
+`terra::plot()`. We could also use `terra::plotRGB()` (after
+`terra::stretch()`ing the band values) to see what this mosaic of images
+would look like to the human eye:
+
+``` r
+landsat_image |> 
+  terra::rast(lyrs = c("R", "G", "B")) |> 
+  terra::stretch() |>
+  terra::plotRGB()
+```
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
 By default, these functions download data from Microsoft’s Planetary
 Computer API, using a number of configuration options set in
@@ -176,13 +263,14 @@ indices <- calculate_indices(
 terra::plot(terra::rast(indices))
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 And last but not least, rsi includes a utility for efficiently combining
 rasters containing different data about the same location into a
-[VRT](https://gdal.org/drivers/raster/vrt.html), which allows programs
-like GDAL to treat these separate data sources as a single file. For
-instance, we can combine our Landsat imagery with the derived indices:
+[VRT](https://gdal.org/en/latest/drivers/raster/vrt.html), which allows
+programs like GDAL to treat these separate data sources as a single
+file. For instance, we can combine our Landsat imagery with the derived
+indices:
 
 ``` r
 raster_stack <- stack_rasters(
@@ -194,7 +282,7 @@ raster_stack <- stack_rasters(
 terra::plot(terra::rast(raster_stack))
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
 This can be extremely useful as a way to create predictor bricks and
 other multi-band rasters from various data sources.

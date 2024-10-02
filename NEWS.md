@@ -1,3 +1,22 @@
+# rsi 0.3.0
+
+* rsi has been peer-reviewed by the rOpenSci project! Huge thank you to 
+  @OldLipe and @mdsumner for their extremely helpful reviews.
+
+* `sentinel2_mask_function()` now masks out SCL values of 2, "DARK_AREA", by 
+  default.
+
+* `landsat_mask_function()` gains an argument, `masked_bits`, that allows you
+  to specify the values you wish to mask out by bit values rather than just 
+  integers. Refer to the Landsat science product guide for further information
+  on what bit values represent for your platform of interest.
+
+* `get_stac_data()` no longer fails if downloading an asset fails, but instead
+  returns a raster with all available data. This may still fail when a single 
+  asset fails to download while downloading multiple assets combined within a 
+  single raster; please open an issue if this happens to you! Thanks to 
+  @laurenkwick in #74 (#75).
+
 # rsi 0.2.1
 
 * `calculate_indices()` gains several new arguments:
