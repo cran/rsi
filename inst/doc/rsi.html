@@ -27,31 +27,46 @@ document.addEventListener('DOMContentLoaded', function(e) {
   }
 });
 </script>
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 
 <style type="text/css">
-code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 
 <style type="text/css">
-code {
-white-space: pre;
-}
-.sourceCode {
-overflow: visible;
-}
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -60,57 +75,58 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-{ counter-reset: source-line 0; }
+  { counter-reset: source-line 0; }
 pre.numberSource code > span
-{ position: relative; left: -4em; counter-increment: source-line; }
+  { position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-{ content: counter(source-line);
-position: relative; left: -1em; text-align: right; vertical-align: baseline;
-border: none; display: inline-block;
--webkit-touch-callout: none; -webkit-user-select: none;
--khtml-user-select: none; -moz-user-select: none;
--ms-user-select: none; user-select: none;
-padding: 0 4px; width: 4em;
-color: #aaaaaa;
-}
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-{ }
+  {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } 
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
-code span.at { color: #7d9029; } 
-code span.bn { color: #40a070; } 
-code span.bu { color: #008000; } 
-code span.cf { color: #007020; font-weight: bold; } 
-code span.ch { color: #4070a0; } 
-code span.cn { color: #880000; } 
-code span.co { color: #60a0b0; font-style: italic; } 
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
-code span.do { color: #ba2121; font-style: italic; } 
-code span.dt { color: #902000; } 
-code span.dv { color: #40a070; } 
-code span.er { color: #ff0000; font-weight: bold; } 
-code span.ex { } 
-code span.fl { color: #40a070; } 
-code span.fu { color: #06287e; } 
-code span.im { color: #008000; font-weight: bold; } 
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
-code span.kw { color: #007020; font-weight: bold; } 
-code span.op { color: #666666; } 
-code span.ot { color: #007020; } 
-code span.pp { color: #bc7a00; } 
-code span.sc { color: #4070a0; } 
-code span.ss { color: #bb6688; } 
-code span.st { color: #4070a0; } 
-code span.va { color: #19177c; } 
-code span.vs { color: #4070a0; } 
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -340,151 +356,83 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>The rsi package aims to help you download data from STAC APIs, to
-compute spectral indices from data, and to handle a handful of other
-spatial data wrangling tasks. This vignette walks through the main
-features of the package. Let’s start off by loading the package:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(rsi)</span></code></pre></div>
+<p>The rsi package aims to help you download data from STAC APIs, to compute spectral indices from data, and to handle a handful of other spatial data wrangling tasks. This vignette walks through the main features of the package. Let’s start off by loading the package:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(rsi)</span></code></pre></div>
 <div id="downloading-data" class="section level2">
 <h2>Downloading data</h2>
-<p>In order to download data from a STAC API, we’re going to need to
-specify both a spatial and temporal area of interest. To define our
-spatial area of interest, we’ll first mock up a small bounding box in
-northern Massachusetts (in a planar CRS appropriate for the region):</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>our_aoi <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_bbox</span>(</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">xmin =</span> <span class="dv">200000</span>, <span class="at">ymin =</span> <span class="dv">900000</span>, <span class="at">xmax =</span> <span class="dv">200100</span>, <span class="at">ymax =</span> <span class="dv">900100</span>),</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">crs =</span> <span class="dv">26986</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>)</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>our_aoi <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_as_sf</span>(sf<span class="sc">::</span><span class="fu">st_as_sfc</span>(our_aoi))</span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_area</span>(our_aoi)</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="fu">plot</span>(sf<span class="sc">::</span><span class="fu">st_geometry</span>(our_aoi))</span></code></pre></div>
+<p>In order to download data from a STAC API, we’re going to need to specify both a spatial and temporal area of interest. To define our spatial area of interest, we’ll first mock up a small bounding box in northern Massachusetts (in a planar CRS appropriate for the region):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>our_aoi &lt;-<span class="st"> </span>sf<span class="op">::</span><span class="kw">st_bbox</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>  <span class="kw">c</span>(<span class="dt">xmin =</span> <span class="dv">200000</span>, <span class="dt">ymin =</span> <span class="dv">900000</span>, <span class="dt">xmax =</span> <span class="dv">200100</span>, <span class="dt">ymax =</span> <span class="dv">900100</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>  <span class="dt">crs =</span> <span class="dv">26986</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>our_aoi &lt;-<span class="st"> </span>sf<span class="op">::</span><span class="kw">st_as_sf</span>(sf<span class="op">::</span><span class="kw">st_as_sfc</span>(our_aoi))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>sf<span class="op">::</span><span class="kw">st_area</span>(our_aoi)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="kw">plot</span>(sf<span class="op">::</span><span class="kw">st_geometry</span>(our_aoi))</span></code></pre></div>
 <p>This is the area we’re going to download and process data for.</p>
-<p>Out of the box, rsi includes a number of functions to make it easy to
-download the most popular data sets from public STAC APIs. For instance,
-the <code>get_landsat_imagery()</code> has a number of default arguments
-for downloading Landsat 8 and 9 imagery from Microsoft’s Planetary
-Computer. We’ll pass our spatial area of interest along with a timeframe
-to this function, in order to get a cloud-masked composite image of all
-Landsat acquisitions for our spatiotemporal window. Let’s grab all the
-imagery from September 2023:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>our_imagery <span class="ot">&lt;-</span> <span class="fu">get_landsat_imagery</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  our_aoi,</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="st">&quot;2023-09-01&quot;</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="st">&quot;2023-09-30&quot;</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="at">output_filename =</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.tif&quot;</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>)</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>our_imagery</span></code></pre></div>
-<p>If we wanted to, we could use <code>future::plan()</code> here to
-specify a parallelization methodology to speed up downloads by using
-multiple threads. We could also use <code>progressr::handlers()</code>
-to get a progress bar to report our download status.</p>
-<p>By default, <code>get_landsat_imagery()</code> will download a
-composite of all bands available in Landsat 8 and 9 imagery for our
-timeframe:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">rast</span>(our_imagery) <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">plot</span>()</span></code></pre></div>
-<p>Notice that this composite has been cloud-masked (using the QA pixel
-band) and rescaled (using the scale and offset specified in metadata
-provided by the STAC endpoint) automatically. You can control these
-behaviors via function arguments.</p>
-<p>We’re also able to use rsi to download other data sets – for
-instance, we could also grab a DEM for this area from Planetary
-Computer, using the <code>get_dem()</code> function:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>our_dem <span class="ot">&lt;-</span> <span class="fu">get_dem</span>(our_aoi)</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">rast</span>(our_dem) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">plot</span>()</span></code></pre></div>
-<p>Under the hood, both of these functions (and their friends,
-<code>get_sentinel2_imagery()</code> and
-<code>get_sentinel1_imagery()</code>) are powered by a lower-level
-<code>get_stac_data()</code> function, which should theoretically work
-with any imagery provided by any STAC API, anywhere. These functions
-simply provide user-friendly defaults to make it faster to get the data
-you care about.</p>
+<p>Out of the box, rsi includes a number of functions to make it easy to download the most popular data sets from public STAC APIs. For instance, the <code>get_landsat_imagery()</code> has a number of default arguments for downloading Landsat 8 and 9 imagery from Microsoft’s Planetary Computer. We’ll pass our spatial area of interest along with a timeframe to this function, in order to get a cloud-masked composite image of all Landsat acquisitions for our spatiotemporal window. Let’s grab all the imagery from September 2023:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>our_imagery &lt;-<span class="st"> </span><span class="kw">get_landsat_imagery</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>  our_aoi,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>  <span class="st">&quot;2023-09-01&quot;</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>  <span class="st">&quot;2023-09-30&quot;</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>  <span class="dt">output_filename =</span> <span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.tif&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>our_imagery</span></code></pre></div>
+<p>If we wanted to, we could use <code>future::plan()</code> here to specify a parallelization methodology to speed up downloads by using multiple threads. We could also use <code>progressr::handlers()</code> to get a progress bar to report our download status.</p>
+<p>By default, <code>get_landsat_imagery()</code> will download a composite of all bands available in Landsat 8 and 9 imagery for our timeframe:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>terra<span class="op">::</span><span class="kw">rast</span>(our_imagery) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="st">  </span>terra<span class="op">::</span><span class="kw">plot</span>()</span></code></pre></div>
+<p>Notice that this composite has been cloud-masked (using the QA pixel band) and rescaled (using the scale and offset specified in metadata provided by the STAC endpoint) automatically. You can control these behaviors via function arguments.</p>
+<p>We’re also able to use rsi to download other data sets – for instance, we could also grab a DEM for this area from Planetary Computer, using the <code>get_dem()</code> function:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>our_dem &lt;-<span class="st"> </span><span class="kw">get_dem</span>(our_aoi)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>terra<span class="op">::</span><span class="kw">rast</span>(our_dem) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="st">  </span>terra<span class="op">::</span><span class="kw">plot</span>()</span></code></pre></div>
+<p>Under the hood, both of these functions (and their friends, <code>get_sentinel2_imagery()</code> and <code>get_sentinel1_imagery()</code>) are powered by a lower-level <code>get_stac_data()</code> function, which should theoretically work with any imagery provided by any STAC API, anywhere. These functions simply provide user-friendly defaults to make it faster to get the data you care about.</p>
 </div>
 <div id="finding-spectral-indices" class="section level2">
 <h2>Finding spectral indices</h2>
-<p>In addition to these STAC-focused data-downloading functions, rsi
-also has an interface to the <a href="https://github.com/awesome-spectral-indices/awesome-spectral-indices">Awesome
-Spectral Indices</a> project via the <code>spectral_indices()</code>
-function:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">spectral_indices</span>() <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
-<p>This function attempts to grab the newest version of the spectral
-indices JSON file from the ASI repo, and then stores that data in a
-cache folder on your computer. If the downloading fails, the package
-will fall back (with a warning) to use your possibly outdated cache
-instead; if you don’t have a cache and can’t download the files, the
-package will instead (with a different warning) resort to using a
-packaged version of the indices file. This ensures that you’re always
-getting the latest and greatest version of the ASI list possible, but
-that the package can still be used without an internet connection.</p>
-<p>There are also functions in rsi to sort through the ASI list of
-indices. For instance, the <code>filter_platforms()</code> function can
-be used to, well, filter the list to only indices that can be calculated
-from a given platform. For instance, to filter to only indices that can
-be calculated using data from Landsat’s Operational Land Imager:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">filter_platforms</span>(<span class="at">platforms =</span> <span class="st">&quot;Landsat-OLI&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
-<p>There’s an equivalent function to filter indices based upon the bands
-that require. For instance, we can filter the list to only indices that
-use the red and blue band of images:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">filter_bands</span>(<span class="at">bands =</span> <span class="fu">c</span>(<span class="st">&quot;R&quot;</span>, <span class="st">&quot;B&quot;</span>))</span></code></pre></div>
-<p>Arguments to these functions let you control whether you’re looking
-for indices that match <em>all</em> platforms and bands you’ve
-specified, or <em>any</em> of them.</p>
+<p>In addition to these STAC-focused data-downloading functions, rsi also has an interface to the <a href="https://github.com/awesome-spectral-indices/awesome-spectral-indices">Awesome Spectral Indices</a> project via the <code>spectral_indices()</code> function:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">spectral_indices</span>() <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">head</span>()</span></code></pre></div>
+<p>This function attempts to grab the newest version of the spectral indices JSON file from the ASI repo, and then stores that data in a cache folder on your computer. If the downloading fails, the package will fall back (with a warning) to use your possibly outdated cache instead; if you don’t have a cache and can’t download the files, the package will instead (with a different warning) resort to using a packaged version of the indices file. This ensures that you’re always getting the latest and greatest version of the ASI list possible, but that the package can still be used without an internet connection.</p>
+<p>There are also functions in rsi to sort through the ASI list of indices. For instance, the <code>filter_platforms()</code> function can be used to, well, filter the list to only indices that can be calculated from a given platform. For instance, to filter to only indices that can be calculated using data from Landsat’s Operational Land Imager:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">filter_platforms</span>(<span class="dt">platforms =</span> <span class="st">&quot;Landsat-OLI&quot;</span>) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">head</span>()</span></code></pre></div>
+<p>There’s an equivalent function to filter indices based upon the bands that require. For instance, we can filter the list to only indices that use the red and blue band of images:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">filter_bands</span>(<span class="dt">bands =</span> <span class="kw">c</span>(<span class="st">&quot;R&quot;</span>, <span class="st">&quot;B&quot;</span>))</span></code></pre></div>
+<p>Arguments to these functions let you control whether you’re looking for indices that match <em>all</em> platforms and bands you’ve specified, or <em>any</em> of them.</p>
 </div>
 <div id="calculating-indices" class="section level2">
 <h2>Calculating indices</h2>
-<p>But rsi doesn’t simply make these formulas available in R, it also
-helps you compute these indices from imagery, via the
-<code>calculate_indices()</code> function. This function takes your
-imagery and a subset of <code>spectral_indices()</code> as arguments,
-and creates a raster containing all of those indices as an output. We
-can use <code>filter_bands()</code> to quickly get a list of the indices
-we can compute from our Landsat imagery, and then
-<code>calculate_indices()</code> to compute all 128 of those indices
-from our images:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>our_indices <span class="ot">&lt;-</span> <span class="fu">calculate_indices</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  our_imagery,</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="fu">filter_bands</span>(<span class="at">bands =</span> <span class="fu">names</span>(terra<span class="sc">::</span><span class="fu">rast</span>(our_imagery))),</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="st">&quot;our_indices.tif&quot;</span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>)</span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">rast</span>(our_indices) <span class="sc">|&gt;</span></span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">plot</span>()</span></code></pre></div>
-<p>Note that <code>calculate_indices()</code> is evaluating the formulas
-in the <code>formula</code> column of the spectral indices data frame as
-if they were code. These formulas are evaluated inside of a very limited
-environment, which doesn’t have access to the global environment or most
-R fixtures, which does <em>reduce</em> the amount of harm malicious code
-could do:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>evil_index <span class="ot">&lt;-</span> <span class="fu">spectral_indices</span>()[<span class="dv">1</span>, ]</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>evil_index<span class="sc">$</span>formula <span class="ot">&lt;-</span> <span class="st">&quot;base::system(&#39;echo OHNO&#39;)&quot;</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="fu">try</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  <span class="fu">calculate_indices</span>(</span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>    our_imagery,</span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>    evil_index,</span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>    <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.tif&quot;</span>)</span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>  )</span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>)</span></code></pre></div>
-<p>But it’s worth scanning your formulas before running
-<code>calculate_indices()</code>, just to make sure you aren’t going to
-be accidentally running something surprising!</p>
+<p>But rsi doesn’t simply make these formulas available in R, it also helps you compute these indices from imagery, via the <code>calculate_indices()</code> function. This function takes your imagery and a subset of <code>spectral_indices()</code> as arguments, and creates a raster containing all of those indices as an output. We can use <code>filter_bands()</code> to quickly get a list of the indices we can compute from our Landsat imagery, and then <code>calculate_indices()</code> to compute all 128 of those indices from our images:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>our_indices &lt;-<span class="st"> </span><span class="kw">calculate_indices</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>  our_imagery,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>  <span class="kw">filter_bands</span>(<span class="dt">bands =</span> <span class="kw">names</span>(terra<span class="op">::</span><span class="kw">rast</span>(our_imagery))),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>  <span class="st">&quot;our_indices.tif&quot;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>terra<span class="op">::</span><span class="kw">rast</span>(our_indices) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="st">  </span>terra<span class="op">::</span><span class="kw">plot</span>()</span></code></pre></div>
+<p>Note that <code>calculate_indices()</code> is evaluating the formulas in the <code>formula</code> column of the spectral indices data frame as if they were code. These formulas are evaluated inside of a very limited environment, which doesn’t have access to the global environment or most R fixtures, which does <em>reduce</em> the amount of harm malicious code could do:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>evil_index &lt;-<span class="st"> </span><span class="kw">spectral_indices</span>()[<span class="dv">1</span>, ]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>evil_index<span class="op">$</span>formula &lt;-<span class="st"> &quot;base::system(&#39;echo OHNO&#39;)&quot;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="kw">try</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>  <span class="kw">calculate_indices</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    our_imagery,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>    evil_index,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a>    <span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.tif&quot;</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a>  )</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a>)</span></code></pre></div>
+<p>But it’s worth scanning your formulas before running <code>calculate_indices()</code>, just to make sure you aren’t going to be accidentally running something surprising!</p>
 </div>
 <div id="stacking-rasters" class="section level2">
 <h2>Stacking rasters</h2>
-<p>Last but not least, rsi also provides a way to combine disparate data
-sets covering the same geographic region into a single VRT, quickly
-creating a file that you can treat as a single raster without taking up
-much additional storage space. This is a great way to create predictor
-bricks from your indices and downloaded data which you can then use for
-model fitting and prediction:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>combined_layers <span class="ot">&lt;-</span> <span class="fu">stack_rasters</span>(</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  <span class="fu">c</span>(our_imagery, our_dem, our_indices),</span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.vrt&quot;</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>)</span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">rast</span>(combined_layers) <span class="sc">|&gt;</span></span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">plot</span>()</span></code></pre></div>
+<p>Last but not least, rsi also provides a way to combine disparate data sets covering the same geographic region into a single VRT, quickly creating a file that you can treat as a single raster without taking up much additional storage space. This is a great way to create predictor bricks from your indices and downloaded data which you can then use for model fitting and prediction:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a>combined_layers &lt;-<span class="st"> </span><span class="kw">stack_rasters</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>  <span class="kw">c</span>(our_imagery, our_dem, our_indices),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>  <span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.vrt&quot;</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>terra<span class="op">::</span><span class="kw">rast</span>(combined_layers) <span class="op">|</span><span class="er">&gt;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a><span class="st">  </span>terra<span class="op">::</span><span class="kw">plot</span>()</span></code></pre></div>
 </div>
 
 
