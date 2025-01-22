@@ -27,7 +27,6 @@
 #'   download_function = rsi_download_rasters
 #' )
 #'
-#'
 #' @export
 rsi_download_rasters <- function(items,
                                  aoi,
@@ -84,7 +83,7 @@ rsi_download_rasters <- function(items,
   # working from the assumption that all downloads take about as long
   #
   # so if we aren't merging, or if there's more assets than tiles, we'll
-  # parallelize the outside loop that walks over assets (which, unless the user 
+  # parallelize the outside loop that walks over assets (which, unless the user
   # has set up wild nested futures, turns the inside one into a serial process)
   asset_iterator <- ifelse(
     merge || (n_tiles_out < ncol(download_locations)),
@@ -129,12 +128,31 @@ rsi_download_rasters <- function(items,
               )
             },
             error = function(e) {
-              browser()
-              rlang::warn(
-                glue::glue(
-                  "Failed to download {items$features[[which_item]]$id %||% 'UNKNOWN'} from {items$features[[which_item]]$properties$datetime %||% 'UNKNOWN'}" # nolint
+              # stop if failure occurs when merging.
+              if (merge) {
+                rlang::abort(
+                  glue::glue(
+                    "GDAL warp failed when attempting to merge ",
+                    "{length(unlist(feature_iter))} items"
+                  ),
+                  class = "rsi_download_warp_error", parent = e
                 )
+              }
+
+              expr1 <- items$features[[which_item]]$id %||% "UNKNOWN"
+              expr2 <- items$features[[which_item]]$properties$datetime %||% "UNKNOWN"
+
+              err_msg <- glue::glue(
+                "Failed to download {expr1} from {expr2}" # nolint
               )
+
+              # stop if failure occurs when there is only one item to download.
+              if (length(feature_iter) == 1) {
+                rlang::abort(err_msg, class = "rsi_download_warp_error", parent = e)
+              }
+
+              # warn if failure occurs when multiple items are being downloaded.
+              rlang::warn(err_msg, parent = e)
               download_locations[which_item, ] <<- NA
             }
           )
