@@ -1,3 +1,7 @@
+# rsi 0.3.3
+
+* Test fixes for CRAN
+
 # rsi 0.3.2
 
 * Failed downloads and merges should now be handled a bit better. Thanks
